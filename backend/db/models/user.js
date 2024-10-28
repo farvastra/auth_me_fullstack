@@ -17,19 +17,36 @@ module.exports = (sequelize, DataTypes) => {
       return User.scope("currentUser").findByPk(id);
     }
 
+    // static async login({ credential, password }) {
+    //   const { Op } = require("sequelize");
+    //   const user = await User.scope("loginUser").findOne({
+    //     where: {
+    //       [Op.or]: {
+    //         username: credential,
+    //         email: credential,
+    //       },
+    //     },
+    //   });
+    //   if (user && user.validatePassword(password)) {
+    //     return await User.scope("currentUser").findByPk(user.id);
+    //   }
+    // }
+
     static async login({ credential, password }) {
       const { Op } = require("sequelize");
       const user = await User.scope("loginUser").findOne({
         where: {
-          [Op.or]: {
-            username: credential,
-            email: credential,
-          },
+          [Op.or]: [{ username: credential }, { email: credential }],
         },
       });
+
+      // If user exists and password is valid, return the user
       if (user && user.validatePassword(password)) {
         return await User.scope("currentUser").findByPk(user.id);
       }
+
+      // If no user is found or password is invalid, return null
+      return null;
     }
 
     static async signup({ username, email, password, firstName, lastName }) {
@@ -38,8 +55,8 @@ module.exports = (sequelize, DataTypes) => {
         username,
         email,
         hashedPassword,
-        firstName, 
-        lastName, 
+        firstName,
+        lastName,
       });
       return await User.scope("currentUser").findByPk(user.id);
     }
