@@ -25,13 +25,13 @@ router.post("/", validateLogin, async (req, res, next) => {
   const user = await User.login({ credential, password });
   console.log("User found:", user);
   // Check if login was unsuccessful
-  // if (!user) {
-  //   const err = new Error("Login failed");
-  //   err.status = 401; // Unauthorized
-  //   err.title = "Login failed";
-  //   err.errors = ["The provided credentials were invalid."];
-  //   return next(err);
-  // }
+  if (!user) {
+    const err = new Error("Login failed");
+    err.status = 401; // Unauthorized
+    err.title = "Login failed";
+    err.errors = ["The provided credentials were invalid."];
+    return next(err);
+  }
 
   // Set token cookie on successful login
   await setTokenCookie(res, user);
