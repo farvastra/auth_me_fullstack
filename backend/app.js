@@ -69,4 +69,8 @@ app.use((err, _req, res, _next) => {
   });
 });
 
+app.get("/", (req, res) => {
+  res.send("Hello, this is the root endpoint of your API!");
+});
+
 module.exports = app;
