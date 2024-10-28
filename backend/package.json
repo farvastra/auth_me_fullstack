@@ -6,6 +6,7 @@
   "scripts": {
     "sequelize": "sequelize",
     "sequelize-cli": "sequelize-cli",
+    "migrate": "sequelize db:migrate",
     "start": "nodemon ./bin/www",
     "start:development": "nodemon ./bin/www",
     "start:production": "node ./bin/www",
