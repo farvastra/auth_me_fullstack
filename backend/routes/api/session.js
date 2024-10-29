@@ -26,9 +26,9 @@ router.post("/", validateLogin, async (req, res, next) => {
   console.log("User found:", user);
   // Check if login was unsuccessful
   if (!user) {
-    const err = new Error("Login failed");
+    const err = new Error("Invalid credentials");
     err.status = 401; // Unauthorized
-    err.title = "Login failed";
+    err.title = "Invalid credentials";
     err.errors = ["The provided credentials were invalid."];
     return next(err);
   }

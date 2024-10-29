@@ -31,21 +31,51 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
-router.post("/", validateSignup, async (req, res) => {
-  const { firstName, lastName, email, password, username } = req.body; // Include firstName and lastName
-  const user = await User.signup({
-    firstName,
-    lastName,
-    email,
-    username,
-    password,
-  });
+// router.post("/", validateSignup, async (req, res) => {
+//   const { firstName, lastName, email, password, username } = req.body; // Include firstName and lastName
+//   const user = await User.signup({
+//     firstName,
+//     lastName,
+//     email,
+//     username,
+//     password,
+//   });
 
-  await setTokenCookie(res, user);
+//   await setTokenCookie(res, user);
 
-  return res.json({
-    user: user,
-  });
+//   return res.status(201).json({
+//     user: user.toSafeObject(),
+//   });
+// });
+router.post("/", validateSignup, async (req, res, next) => {
+  const { firstName, lastName, email, username, password } = req.body;
+
+  try {
+    const user = await User.signup({
+      firstName,
+      lastName,
+      email,
+      username,
+      password,
+    });
+    await setTokenCookie(res, user);
+    return res.status(201).json({
+      user: user.toSafeObject(),
+    });
+  } catch (error) {
+    if (error.name === "SequelizeUniqueConstraintError") {
+      const errors = {};
+      error.errors.forEach((e) => {
+        errors[e.path] = `${e.path} must be unique`;
+      });
+      res.status(500).json({
+        message: "User already exists with the specified email or username",
+        errors,
+      });
+    } else {
+      next(error);
+    }
+  }
 });
 
 module.exports = router;
