@@ -20,10 +20,86 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
-// Get all Spots
+
 router.get("/", async (req, res) => {
-  const spots = await Spot.findAll();
-  return res.json({ Spots: spots });
+  try {
+    // Set default pagination values
+    const page = parseInt(req.query.page) || 1;
+    const size = parseInt(req.query.size) || 20;
+
+    // Parse query parameters
+    const minLat = parseFloat(req.query.minLat);
+    const maxLat = parseFloat(req.query.maxLat);
+    const minLng = parseFloat(req.query.minLng);
+    const maxLng = parseFloat(req.query.maxLng);
+    const minPrice = parseFloat(req.query.minPrice);
+    const maxPrice = parseFloat(req.query.maxPrice);
+
+    // Initialize error collection
+    const errors = {};
+
+    // Validate pagination
+    if (isNaN(page) || page < 1) errors.page = "must be a positive integer";
+    if (isNaN(size) || size < 1) errors.size = "must be a positive integer";
+
+    // Validate lat/lng and price parameters
+    if (req.query.minLat && isNaN(minLat)) errors.minLat = "must be a number";
+    if (req.query.maxLat && isNaN(maxLat)) errors.maxLat = "must be a number";
+    if (req.query.minLng && isNaN(minLng)) errors.minLng = "must be a number";
+    if (req.query.maxLng && isNaN(maxLng)) errors.maxLng = "must be a number";
+    if (req.query.minPrice && isNaN(minPrice))
+      errors.minPrice = "must be a number";
+    if (req.query.maxPrice && isNaN(maxPrice))
+      errors.maxPrice = "must be a number";
+
+    // Return 400 if there are validation errors
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        message: "Invalid query parameters.",
+        errors,
+      });
+    }
+
+    // Apply filters for querying spots
+    const where = {};
+    if (req.query.minLat || req.query.maxLat) {
+      where.lat = {
+        ...(req.query.minLat && { [Op.gte]: minLat }),
+        ...(req.query.maxLat && { [Op.lte]: maxLat }),
+      };
+    }
+    if (req.query.minLng || req.query.maxLng) {
+      where.lng = {
+        ...(req.query.minLng && { [Op.gte]: minLng }),
+        ...(req.query.maxLng && { [Op.lte]: maxLng }),
+      };
+    }
+    if (req.query.minPrice || req.query.maxPrice) {
+      where.price = {
+        ...(req.query.minPrice && { [Op.gte]: minPrice }),
+        ...(req.query.maxPrice && { [Op.lte]: maxPrice }),
+      };
+    }
+
+    // Fetch spots with pagination and filtering
+    const spots = await Spot.findAll({
+      where,
+      limit: size,
+      offset: (page - 1) * size,
+    });
+
+    // Return response with paginated data
+    res.json({
+      page,
+      size,
+      Spots: spots,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: "An unexpected error occurred",
+      error: err.message,
+    });
+  }
 });
 
 // Get all Spots owned by the Current User
@@ -439,87 +515,5 @@ router.delete("/bookings/:bookingId", requireAuth, async (req, res) => {
   await booking.destroy();
   return res.status(200).json({ message: "Successfully deleted" });
 });
-
-// Delete a Spot Image
-
-router.delete("/spot-images/:imageId", requireAuth, async (req, res) => {
-  const image = await SpotImage.findByPk(req.params.imageId);
-
-  if (!image) {
-    return res.status(404).json({ message: "Spot Image couldn't be found" });
-  }
-
-  const spot = await Spot.findByPk(image.spotId);
-  if (spot.ownerId !== req.user.id) {
-    return res.status(403).json({ message: "Forbidden" });
-  }
-
-  await image.destroy();
-  return res.status(200).json({ message: "Successfully deleted" });
-});
-
-
-// Add Query filters to get all spots
-
-router.get("/spots/filter", async (req, res) => {
-  let {
-    page = 2,
-    size = 20,
-    minLat,
-    maxLat,
-    minLng,
-    maxLng,
-    minPrice,
-    maxPrice,
-  } = req.query;
-
-  // Convert query parameters to numbers where applicable
-  page = Number(page);
-  size = Number(size);
-  minLat = minLat ? Number(minLat) : undefined;
-  maxLat = maxLat ? Number(maxLat) : undefined;
-  minLng = minLng ? Number(minLng) : undefined;
-  maxLng = maxLng ? Number(maxLng) : undefined;
-  minPrice = minPrice ? Number(minPrice) : undefined;
-  maxPrice = maxPrice ? Number(maxPrice) : undefined;
-
-  // Validate query parameters
-  if (
-    isNaN(page) ||
-    isNaN(size) ||
-    (minLat && isNaN(minLat)) ||
-    (maxLat && isNaN(maxLat)) ||
-    (minLng && isNaN(minLng)) ||
-    (maxLng && isNaN(maxLng)) ||
-    (minPrice && isNaN(minPrice)) ||
-    (maxPrice && isNaN(maxPrice))
-  ) {
-    return res.status(400).json({ message: "Bad Request" });
-  }
-
-  // Pagination and filtering
-  const pagination = {
-    limit: size,
-    offset: (page - 1) * size,
-  };
-
-  const where = {};
-  if (minLat !== undefined) where.lat = { [Op.gte]: minLat };
-  if (maxLat !== undefined) where.lat = { [Op.lte]: maxLat };
-  if (minLng !== undefined) where.lng = { [Op.gte]: minLng };
-  if (maxLng !== undefined) where.lng = { [Op.lte]: maxLng };
-  if (minPrice !== undefined) where.price = { [Op.gte]: minPrice };
-  if (maxPrice !== undefined) where.price = { [Op.lte]: maxPrice };
-
-  try {
-    const spots = await Spot.findAll({ where, ...pagination });
-    // Include `page` and `size` keys in the response
-    return res.status(200).json({ Spots: spots, page, size });
-  } catch (error) {
-    console.error("Error fetching spots:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-});
-
 
 module.exports = router;

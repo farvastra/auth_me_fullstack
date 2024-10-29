@@ -1,12 +1,6 @@
 const express = require("express");
 const { Op } = require("sequelize");
-const {
-  Spot,
-  User,
-  Review,
-  ReviewImage,
- 
-} = require("../../db/models");
+const { Spot, User, Review, ReviewImage } = require("../../db/models");
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { validateSpot } = require("../../utils/validation");
 const router = express.Router();
@@ -83,58 +77,39 @@ router.get("/:reviewId", async (req, res) => {
 });
 
 // Get all reviews by the current user
-// router.get("/current/", requireAuth, async (req, res) => {
-//   const reviews = await Review.findAll({
-//     where: { userId: req.user.id },
-//     include: [
-//       {
-//         model: User,
-//         attributes: ["id", "firstName", "lastName"], // Include User details
-//       },
-//       {
-//         model: Spot,
-//         attributes: [
-//           "id",
-//           "ownerId",
-//           "address",
-//           "city",
-//           "state",
-//           "country",
-//           "lat",
-//           "lng",
-//           "name",
-//           "price",
-//           "previewImage",
-//         ],
-//       },
-//       {
-//         model: ReviewImage,
-//         as: "ReviewImages",
-//         attributes: ["id", "url"],
-//       },
-//     ],
-//   });
+router.get("/current/spotReview", requireAuth, async (req, res) => {
+  const reviews = await Review.findAll({
+    where: { userId: req.user.id },
+    include: [
+      {
+        model: User,
+        attributes: ["id", "firstName", "lastName"], // Include User details
+      },
+      {
+        model: Spot,
+        attributes: [
+          "id",
+          "ownerId",
+          "address",
+          "city",
+          "state",
+          "country",
+          "lat",
+          "lng",
+          "name",
+          "price",
+          "previewImage",
+        ],
+      },
+      {
+        model: ReviewImage,
+        as: "ReviewImages",
+        attributes: ["id", "url"],
+      },
+    ],
+  });
 
-//   return res.status(200).json({ Reviews: reviews });
-// });
-// Get all Reviews of the Current User
-router.get("/current/reviews", requireAuth, async (req, res) => {
-  try {
-    
-    // if (!req.user) {
-    //   return res.status(401).json({ message: "Unauthorized" });
-    // }
-
-    const reviews = await Review.findAll({
-      where: { userId: req.user.id }, 
-      include: [{ model: Spot }, { model: ReviewImage }], 
-    });
-
-    return res.json({ Reviews: reviews });
-  } catch (error) {
-    console.error(error); 
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
+  return res.status(200).json({ Reviews: reviews });
 });
 
 
@@ -165,6 +140,5 @@ router.post("/:reviewId/images", requireAuth, async (req, res) => {
 
   return res.status(201).json(newImage);
 });
-
 
 module.exports = router;
