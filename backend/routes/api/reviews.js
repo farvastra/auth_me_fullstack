@@ -62,39 +62,6 @@ router.delete("/:reviewId", requireAuth, async (req, res) => {
   return res.json({ message: "Successfully deleted" });
 });
 
-// // get all reviews by a current user
-// router.get("/current", requireAuth, async (req, res) => {
-//   try {
-//     const userId = parseInt(req.user.id, 10); // Parse userId as an integer
-//     if (isNaN(userId)) {
-//       return res.status(400).json({ message: "Invalid user ID" });
-//     }
-
-//     const reviews = await Review.findAll({
-//       where: { userId }, // Match reviews by userId
-//       include: [
-//         {
-//           model: User,
-//           attributes: ["id", "firstName", "lastName"], // Include user details
-//         },
-//         {
-//           model: Spot,
-//           attributes: ["id", "name", "price"], // Simplified attributes
-//         },
-//         {
-//           model: ReviewImage,
-//           as: "ReviewImages",
-//           attributes: ["id", "url"], // Include review images
-//         },
-//       ],
-//     });
-
-//     return res.status(200).json({ Reviews: reviews });
-//   } catch (error) {
-//     console.error("Error fetching reviews:", error.message);
-//     return res.status(500).json({ message: "Internal server error" });
-//   }
-// });
 
 // Get all reviews by the current user
 router.get("/current", requireAuth, async (req, res) => {
