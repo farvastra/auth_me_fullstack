@@ -12,15 +12,18 @@ const isProduction = environment === "production";
 const routes = require("./routes");
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://localhost:3000", // ✅ Allow your frontend
+    credentials: true, // ✅ Allow cookies
+  })
+);
 
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
-if (!isProduction) {
-  // enable cors only in development
-  app.use(cors());
-}
+
 
 app.use(
   helmet.crossOriginResourcePolicy({
