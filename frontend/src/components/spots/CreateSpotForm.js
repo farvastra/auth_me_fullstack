@@ -26,7 +26,7 @@ const CreateSpotForm = () => {
         // Check for empty fields.
         Object.keys(formData).forEach((key) => {
           if (!formData[key]) {
-            newErrors[key] = "This field is required";
+            newErrors[key] = "This field is required!";
           }
         });
       
@@ -57,11 +57,8 @@ const CreateSpotForm = () => {
             newErrors.lng = "Longitude must be within -180 and 180";
           }
         }
-      
-        // Set the errors state so they can be displayed in the UI.
         setErrors(newErrors);
-      
-        // If there are any errors, return false.
+
         return Object.keys(newErrors).length === 0;
       };
       

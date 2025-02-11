@@ -57,12 +57,11 @@ npm install
 
 **Configure Environment Variables: Create a .env file in the backend folder with the following content (modify the values as needed):**
 
-DB_HOST=localhost
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
-DB_NAME=your_database_name
-PORT=8000
-SESSION_SECRET=your_session_secret
+NODE_ENV = "development"
+PORT = 8000
+DB_FILE= db/dev.db
+JWT_SECRET= "secret"
+JWT_EXPIRES_IN = 7200
 
 **Set Up the Database:**
 
