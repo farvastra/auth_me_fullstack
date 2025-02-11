@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addReview } from "../../features/ReviewsSlice";
+import "../styles/addReview.css";
 
 const AddReview = () => {
   const { spotId } = useParams();

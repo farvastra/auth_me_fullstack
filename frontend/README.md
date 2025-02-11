@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# Spots & Reviews App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Introduction
 
-## Available Scripts
+The Spots & Reviews App is a full-stack web application that allows users to manage their own "spots" (e.g., properties, locations) and receive feedback in the form of reviews. Users can sign up, log in, create, view, update, and delete spots, as well as add, view, and delete reviews for each spot. This project is a continuation of our previous Express API backend project and now integrates a React frontend with Redux for state management.
 
-In the project directory, you can run:
+## Technologies Used
 
-### `npm start`
+**Backend:**
+- Node.js
+- Express.js
+- Sequelize ORM
+- SQLite3/PostgresQL
+- Axios (for API calls)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Frontend:**
+- React
+- Redux (with Redux Toolkit)
+- React Router
+- Axios
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+**Other Tools:**
+- Git & GitHub
+- VSCode
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Project Screenshot
 
-### `npm run build`
+![Project Screenshot](./public/assets/project-screenshot.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## How to Launch the Application Locally
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
+- **Node.js** (version 14.x or higher)
+- **MySQL Server** installed and running
+- **Git** installed
 
-### `npm run eject`
+### Setup Instructions
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Clone the Repository:**
+   ```
+   git clone https://github.com/farvastra/auth_me_backend.git
+   cd auth_me_backend
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. **Backend Setup**
+The backend of this project is built with Express, Sequelize, and MySQL. Follow these steps to set it up:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**Navigate to the Backend Folder:**
+cd backend
 
-## Learn More
+**Install Dependencies:**
+```
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Configure Environment Variables: Create a .env file in the backend folder with the following content (modify the values as needed):**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+DB_HOST=localhost
+DB_USER=your_mysql_username
+DB_PASSWORD=your_mysql_password
+DB_NAME=your_database_name
+PORT=8000
+SESSION_SECRET=your_session_secret
 
-### Code Splitting
+**Set Up the Database:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+If you're using Sequelize migrations, run:
+```
+npx sequelize-cli db:migrate
 
-### Analyzing the Bundle Size
+```
+Alternatively, create the database manually and ensure your models are synced.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+**Start the Backend Server:**
+```
+npm start
 
-### Making a Progressive Web App
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Your Express API should now be running at http://localhost:8000.
 
-### Advanced Configuration
+3. **Frontend Setup**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The frontend of this project is built with React and Redux. Follow these steps to set it up:
 
-### Deployment
+**Navigate to the Frontend Folder:**
+cd ../frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+**Install Dependencies:**
+```
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+
+**Start the Frontend Development Server:**
+```
+npm start
+
+```
+
+Your application should now be accessible at http://localhost:3000.
+
+4. **Running the Full Application**
+
+Once both the backend and frontend servers are running, you can interact with the application locally. Open your browser and navigate to http://localhost:3000 to see the app in action.
+

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews, selectReviewsBySpotId, deleteReview } from "../../features/ReviewsSlice";
-// import "./Reviews.css";
+import "../styles/reviews.css";
 
 const Reviews = () => {
   const { spotId } = useParams();
@@ -29,7 +29,9 @@ const Reviews = () => {
       <h2>Reviews for Spot</h2>
       {reviews.length === 0 ? (
         <p>
-          No reviews yet. <Link to={`/add-review/${spotId}`}>Add a review</Link>
+          No reviews yet.  <Link to={`/add-review/${spotId}`} className="add-review-button">
+        Add Review
+      </Link> 
         </p>
       ) : (
         <ul className="reviews-list">
@@ -51,9 +53,7 @@ const Reviews = () => {
           ))}
         </ul>
       )}
-      <Link to={`/add-review/${spotId}`} className="add-review-button">
-        Add Review
-      </Link>
+     
     </div>
   );
 };

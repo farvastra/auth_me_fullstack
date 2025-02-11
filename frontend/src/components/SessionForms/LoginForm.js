@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {loginUser} from "../../features/session/SessionSlice";
 import { useNavigate } from "react-router-dom";
 import { setUser } from '../../features/session/SessionSlice';
+import "../styles/login-signup.css"
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -15,19 +16,24 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.table({ credential, password });
-    
     try {
-      const result = await dispatch(loginUser({credential, password}));
-      
-      const userData = result.payload.user.username ; 
-      console.log(result, userData);
-      dispatch(setUser(userData));
-      if (result.meta.requestStatus === "fulfilled") 
-        navigate("/spots");
+      const result = await dispatch(loginUser({ credential, password }));
+    
+
+      if (result.payload && result.payload.user) {
+        const userData = result.payload.user; 
+        console.log(result, userData);
+        dispatch(setUser(userData));
+        if (result.meta.requestStatus === "fulfilled") 
+                  navigate("/spots");
+      } else {
+        console.error("Login failed: No user data returned");
+      }
+
     } catch (error) {
-      
       console.error("Failed to login:", error);
     }
+    
   };
   
 

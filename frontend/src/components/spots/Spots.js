@@ -1,9 +1,11 @@
 import React, {useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { fetchSpots, deleteSpot } from '../../features/SpotsSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import "../styles/spotsPage.css";
+
 
 const SpotsPage = () => {
     const dispatch = useDispatch();
@@ -23,7 +25,9 @@ const SpotsPage = () => {
             <h1>My Spots</h1>
 
             {Array.isArray(spots) && spots.length === 0 ? (
-                <p>You don't have any spots created yet, try to create new spots.</p>
+                <p>You don't have any spots created yet, <Link to={`/spots/create`} className="add-spot-button">
+                Add Spot
+              </Link> </p>
             ) : (
                 <ul className="spots-list">
                     {Array.isArray(spots) && spots.map(spot => (

@@ -1,19 +1,19 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { logOut } from "../../features/session/SessionSlice"; // Import logOut
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../features/session/SessionSlice";
+import { useNavigate, Link } from "react-router-dom";
+import DemoLoginButton from "../SessionForms/DemoLoginButton"; 
+import "../styles/navbar.css";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user")); 
-   console.log("User:", user);
-
-   const handleLogout = async () => {
+  const user = useSelector(state => state.session.user);
+  
+  const handleLogout = async () => {
     try {
-      dispatch(logOut());  
-      navigate("/login");  
+      dispatch(logOut());
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -27,13 +27,14 @@ const Navbar = () => {
           <>
             <Link to="/spots/create">Create Spot</Link>
             <Link to="/spots">Spots</Link>
-            <span>Welcome, {user}!</span>
+            <span>Welcome, {user.username}!</span>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
           <>
             <Link to="/signup">Sign Up</Link>
             <Link to="/login">Login</Link>
+            <DemoLoginButton />
           </>
         )}
       </div>

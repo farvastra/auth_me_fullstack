@@ -14,8 +14,8 @@ const routes = require("./routes");
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000", // ✅ Allow your frontend
-    credentials: true, // ✅ Allow cookies
+    origin: "http://localhost:3000", // 
+    credentials: true, // ✅ 
   })
 );
 
@@ -31,7 +31,7 @@ app.use(
   })
 );
 
-// Set the _csrf token and create req.csrfToken method
+// 
 app.use(
   csurf({
     cookie: {
@@ -55,7 +55,7 @@ app.use((_req, _res, next) => {
 });
 
 app.use((err, _req, _res, next) => {
-  // check if error is a Sequelize error:
+
   if (err instanceof ValidationError) {
     err.errors = err.errors.map((e) => e.message);
     err.title = "Validation error";

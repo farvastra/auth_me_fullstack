@@ -1,0 +1,83 @@
+/* Navbar styles */
+nav {
+    background-color: #2c3e50; 
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav a, nav span {
+    color: #ecf0f1; 
+    font-size: 16px;
+    text-decoration: none;
+    margin-right: 15px;
+    transition: color 0.3s ease;
+  }
+  
+  nav a:hover,
+  nav button:hover {
+    color: #3498db; 
+  }
+  
+  nav .auth-links {
+    display: flex;
+    align-items: center;
+  }
+  
+  nav .auth-links a {
+    padding: 8px 15px;
+    white-space: nowrap;
+    border-radius: 5px;
+    background-color: #3498db;
+    margin-right: 10px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  nav .auth-links a:hover {
+    background-color: #2980b9; 
+  }
+  
+  nav .auth-links button {
+    padding: 8px 8px;
+    background-color: #e74c3c;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  nav .auth-links button:hover {
+    background-color: #c0392b; 
+  }
+  
+  nav .auth-links span {
+    font-weight: bold;
+    margin-right: 20px;
+    font-size: 16px;
+  }
+  
+  /* Responsive Navbar */
+  @media (max-width: 768px) {
+    nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    nav .auth-links {
+      margin-top: 10px;
+      flex-direction: column;
+    }
+  
+    nav a, nav button {
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+  
+  
