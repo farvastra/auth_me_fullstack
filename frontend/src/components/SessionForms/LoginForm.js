@@ -24,6 +24,7 @@ const LoginForm = () => {
         const userData = result.payload.user; 
         console.log(result, userData);
         dispatch(setUser(userData));
+        localStorage.setItem("user", JSON.stringify(userData));
         if (result.meta.requestStatus === "fulfilled") 
                   navigate("/spots");
       } else {

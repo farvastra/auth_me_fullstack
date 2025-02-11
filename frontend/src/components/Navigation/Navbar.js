@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut } from "../../features/session/SessionSlice";
+import { logOut, setUser } from "../../features/session/SessionSlice";
 import { useNavigate, Link } from "react-router-dom";
 import DemoLoginButton from "../SessionForms/DemoLoginButton"; 
 import "../styles/navbar.css";
@@ -9,10 +9,19 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector(state => state.session.user);
+
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser && !user) {
+      dispatch(setUser(JSON.parse(storedUser))); 
+    }
+  }, [dispatch, user]);
   
   const handleLogout = async () => {
     try {
       dispatch(logOut());
+      localStorage.removeItem("user"); // Clear user from localStorage
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
