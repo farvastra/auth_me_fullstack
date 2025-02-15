@@ -41,6 +41,12 @@ app.use(
     },
   })
 );
+app.use(session({
+  secret: "secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: true, sameSite: "strict" }
+}));
 
 app.use(routes);
 app.get("/", (req, res) => {
