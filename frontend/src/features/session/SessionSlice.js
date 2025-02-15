@@ -8,7 +8,7 @@ export const loginUser = createAsyncThunk("login", async (body, thunkAPI) => {
 
    
 
-    const response = await axiosInstance.post("http://localhost:8000/api/session", body);
+    const response = await axiosInstance.post("https://auth-me-backend.onrender.com/api/session", body);
 
     console.log(response.data)
 
@@ -24,7 +24,7 @@ export const loginUser = createAsyncThunk("login", async (body, thunkAPI) => {
 export const signupUser = createAsyncThunk("session/signup", async (userData, thunkAPI) => {
   try {
 
-    const response = await axiosInstance.post("http://localhost:8000/api/users",
+    const response = await axiosInstance.post("https://auth-me-backend.onrender.com/api/users",
       userData);
 
     return response.data;
@@ -37,7 +37,7 @@ export const signupUser = createAsyncThunk("session/signup", async (userData, th
 
 export const logoutUser = createAsyncThunk("session/logout", async (_, thunkAPI) => {
   try {
-    await axiosInstance.delete("http://localhost:8000/api/session");
+    await axiosInstance.delete("https://auth-me-backend.onrender.com/api/session");
     return null; 
   } catch (error) {
     return thunkAPI.rejectWithValue(error.response?.data || "Logout failed");

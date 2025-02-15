@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axiosInstance"; 
-const API_BASE_URL = "http://localhost:8000/api/spots";
+const API_BASE_URL = "https://auth-me-backend.onrender.com/api/spots";
 
 // Fetch reviews for a specific spot
 export const fetchReviews = createAsyncThunk(
@@ -34,7 +34,7 @@ export const deleteReview = createAsyncThunk(
     async ({ reviewId}, { rejectWithValue }) => {
       try {
        
-        const response = await axiosInstance.delete(`http://localhost:8000/api/reviews/${reviewId}`);
+        const response = await axiosInstance.delete(`https://auth-me-backend.onrender.com/api/reviews/${reviewId}`);
         return (response,{ reviewId});
       } catch (error) {
         return rejectWithValue(error.response?.data?.message || "Failed to delete review");
