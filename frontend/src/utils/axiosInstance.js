@@ -2,35 +2,33 @@ import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: "https://auth-me-backend.onrender.com/api",
-  withCredentials: true, 
+  withCredentials: true,
 });
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      console.error("API Error Response:", error.response.data);
-      console.error("Status Code:", error.response.status);
-      console.error("Headers:", error.response.headers);
-    } else if (error.request) {
-      console.error("No response received:", error.request);
-    } else {
-      console.error("Error in setting up the request:", error.message);
-    }
-    return Promise.reject(error);
+axiosInstance.interceptors.request.use((config) => {
+  const csrfToken = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("XSRF-TOKEN="))
+    ?.split("=")[1];
+  if (csrfToken) {
+    // Use "x-csrf-token" (all lowercase) so that csurf recognizes it
+    config.headers["x-csrf-token"] = csrfToken;
   }
-);
+  return config;
+}, (error) => Promise.reject(error));
+
 
 
 export const restoreCSRF = async () => {
   try {
     const response = await axiosInstance.get("/csrf/restore", { withCredentials: true });
-
-    console.log("CSRF Response Data:", response.data); 
-    const csrfToken =
-      response.data["XSRF-Token"] || response.data.csrfToken || response.data.token;
-
+    console.log("CSRF Response Data:", response.data);
+    
+    // Adjust token extraction based on your backend's response format.
+    const csrfToken = response.data["XSRF-Token"] || response.data.csrfToken || response.data.token;
+    
     if (csrfToken) {
+      // Set the header name to X-XSRF-TOKEN to match common csurf defaults
       axiosInstance.defaults.headers.common["X-XSRF-TOKEN"] = csrfToken;
       console.log("CSRF token set successfully:", csrfToken);
     } else {

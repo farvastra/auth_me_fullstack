@@ -1,18 +1,31 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axiosInstance from '../utils/axiosInstance'; 
+import axiosInstance, {restoreCSRF} from '../utils/axiosInstance'; 
 const API_BASE_URL = 'https://auth-me-backend.onrender.com/api/spots';
 
 // Fetch all spots
-export const fetchSpots = createAsyncThunk('spots/fetchSpots', async () => {
-    const response = await axiosInstance.get(`${API_BASE_URL}/current`);
-    return response.data.Spots;  
-});
+// export const fetchSpots = createAsyncThunk('spots/fetchSpots', async () => {
+//     const response = await axiosInstance.get(`${API_BASE_URL}/current`, );
+//     console.log("resp",response.data.Spots);
+//     return response.data.Spots;  
+// });
 
+// Fetch all spots by current user
+export const fetchSpots = createAsyncThunk('spots/fetchSpots', async () => {
+
+    restoreCSRF().then(() => {
+        console.log("✅ CSRF Token restored, safe to make requests.");
+      });
+    const response = await axiosInstance.get(`${API_BASE_URL}/current`);
+    console.log("resp", response.data.Spots);
+    return response.data.Spots;
+});
 
 // Create a new spot
 export const createSpot = createAsyncThunk('spots/createSpot', async (spotData) => {
     try {
-        const response = await axiosInstance.post(API_BASE_URL, spotData); 
+        const response = await axiosInstance.post(API_BASE_URL, spotData, {
+            withCredentials: true, 
+          }); 
         return response.data; 
     } catch (error) {
         throw new Error('Failed to create spot');
