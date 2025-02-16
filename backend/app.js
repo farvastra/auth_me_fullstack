@@ -39,10 +39,12 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
+
+app.use(routes);
+
+
 const csrfProtection = csrf({ cookie: true });
 app.use(csrfProtection);
-
-
 app.use((req, res, next) => {
   res.cookie("XSRF-TOKEN", req.csrfToken(), {
     httpOnly: false,
@@ -57,10 +59,6 @@ app.use(
     policy: "cross-origin",
   })
 );
-
-
-
-app.use(routes);
 
 
 app.get("/csrf/restore", (req, res) => {
