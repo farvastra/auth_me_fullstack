@@ -7,17 +7,16 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const { ValidationError } = require("sequelize");
 const { environment } = require("./config");
-const isProduction = environment === "production";
-const session = require("express-session");
-
 const routes = require("./routes");
+
+const isProduction = environment === "production";
 
 const app = express();
 
-
+// ✅ Allow CORS for specific origins
 const allowedOrigins = [
   "http://localhost:3000", // Local development
-  "https://spots-app.onrender.com", //Deployed frontend
+  "https://spots-app.onrender.com", // Deployed frontend
 ];
 
 app.use((req, res, next) => {
@@ -36,25 +35,22 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
-const csrfProtection = csrf({ sessionKey: "session" }); 
 
-
+const csrfProtection = csrf({ cookie: true });
 app.use(csrfProtection);
+
 
 app.use((req, res, next) => {
   res.cookie("XSRF-TOKEN", req.csrfToken(), {
     httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProduction,
     sameSite: "Lax",
   });
   next();
 });
-
-
 
 app.use(
   helmet.crossOriginResourcePolicy({
@@ -63,31 +59,15 @@ app.use(
 );
 
 
-app.use(
-  csrf({
-    cookie: {
-      secure: isProduction,
-      sameSite: isProduction && "Lax",
-      httpOnly: true,
-    },
-  })
-);
-app.use(session({
-  secret: "secret",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: true,  
-    sameSite: "lax", 
-    httpOnly: true
-  }
-}));
-
 
 app.use(routes);
-app.get("/", (req, res) => {
-  res.send("Hello, this is the root endpoint of your API!");
+
+
+app.get("/csrf/restore", (req, res) => {
+  res.json({ "XSRF-TOKEN": req.csrfToken() });
 });
+
+
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
@@ -97,7 +77,6 @@ app.use((_req, _res, next) => {
 });
 
 app.use((err, _req, _res, next) => {
-
   if (err instanceof ValidationError) {
     err.errors = err.errors.map((e) => e.message);
     err.title = "Validation error";
