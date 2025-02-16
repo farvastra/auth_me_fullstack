@@ -7,8 +7,8 @@ const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const { ValidationError } = require("sequelize");
 const { environment } = require("./config");
-const isProduction = environment === "production";
 
+const isProduction = environment === "production";
 const routes = require("./routes");
 
 const app = express();
@@ -18,32 +18,23 @@ app.use(cookieParser());
 app.use(express.json());
 
 
-const allowedOrigins = [
-  "http://localhost:3000", 
-  "https://spots-app.onrender.com",
-];
+app.use(
+  cors({
+    origin: ["http://localhost:3000", "https://spots-app.onrender.com"],
+    credentials: true, 
+  })
+);
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {g
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-CSRF-Token, XSRF-TOKEN");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
 
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(200);
-  }
-
-  next();
-});
+app.options("*", cors());
 
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin",
   })
 );
+
+app.use(routes);
 
 
 app.use(
@@ -56,10 +47,7 @@ app.use(
   })
 );
 
-app.use(routes);
-app.get("/", (req, res) => {
-  res.send("Hello, this is the root endpoint of your API!");
-});
+
 app.use((_req, _res, next) => {
   const err = new Error("The requested resource couldn't be found.");
   err.title = "Resource Not Found";
@@ -76,7 +64,16 @@ app.use((err, _req, _res, next) => {
   next(err);
 });
 
+
 app.use((err, _req, res, _next) => {
+  if (err.code === "EBADCSRFTOKEN") {
+    return res.status(403).json({
+      title: "CSRF Token Error",
+      message: "Invalid CSRF token. Please refresh the page and try again.",
+      errors: [err.message],
+    });
+  }
+
   res.status(err.status || 500);
   console.error(err);
   res.json({
