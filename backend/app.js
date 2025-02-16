@@ -43,11 +43,16 @@ app.use(
   })
 );
 app.use(session({
-  secret: "secret",
+  secret: "your-secret-key",
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: true, sameSite: "strict" }
+  cookie: {
+    secure: process.env.NODE_ENV === "production",  
+    sameSite: "lax", 
+    httpOnly: true
+  }
 }));
+
 
 app.use(routes);
 app.get("/", (req, res) => {
