@@ -8,7 +8,7 @@ export const loginUser = createAsyncThunk("login", async (body, thunkAPI) => {
 
    
 
-    const response = await axiosInstance.post("https://auth-me-backend.onrender.com/api/session", body);
+    const response = await axiosInstance.post("https://auth-me-backend.onrender.com/api/session", body, {  withCredentials: true,});
 
     console.log(response.data)
 

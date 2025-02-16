@@ -32,6 +32,7 @@ const LoginForm = () => {
       }
 
     } catch (error) {
+      
       console.error("Failed to login:", error);
     }
     

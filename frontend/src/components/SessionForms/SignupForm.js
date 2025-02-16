@@ -24,9 +24,10 @@ const SignupForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await dispatch(signupUser(userData));
-     const userDetails = result.payload.user; 
+     const userDetails = result?.payload?.user; 
             console.log(result, userDetails);
             dispatch(setUser(userDetails));
+            localStorage.setItem("user", JSON.stringify(userData));
     if (result.meta.requestStatus === "fulfilled")
        navigate("/spots");
     console.log('Dispatch result:', result);

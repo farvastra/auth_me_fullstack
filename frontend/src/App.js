@@ -10,7 +10,7 @@ import CreateSpot from "./components/spots/CreateSpotForm";
 import AllSpots from "./components/spots/Spots"; 
 import EditSpotPage from './components/spots/EditSpotPage';
 import AddReview from "./components/reviews/AddReview";
-import Reviews from "./components/reviews/reviews";
+import Reviews from "./components/reviews/Reviews";
 import "./App.css";
 
 const App = () => (

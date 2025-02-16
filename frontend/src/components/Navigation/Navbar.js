@@ -13,15 +13,24 @@ const Navbar = () => {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser && !user) {
-      dispatch(setUser(JSON.parse(storedUser))); 
+    if (storedUser) {
+      try {
+        const parsedUser = JSON.parse(storedUser);  
+        if (!user) {
+          dispatch(setUser(parsedUser)); 
+        }
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("user"); // Remove corrupted data
+      }
     }
   }, [dispatch, user]);
+
   
-  const handleLogout = async () => {
+    const handleLogout = async () => {
     try {
       dispatch(logOut());
-      localStorage.removeItem("user"); // Clear user from localStorage
+      localStorage.removeItem("user"); 
       navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
@@ -36,7 +45,7 @@ const Navbar = () => {
           <>
             <Link to="/spots/create">Create Spot</Link>
             <Link to="/spots">Spots</Link>
-            <span>Welcome, {user.username}!</span>
+            {/* <span>Welcome, {user?.username}!</span> */}
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
