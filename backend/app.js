@@ -17,36 +17,12 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
 
-
-// const allowedOrigins = [
-//   "http://localhost:3000", 
-//   "https://spots-app.onrender.com",
-// ];
-
-// app.use((req, res, next) => {
-//   const origin = req.headers.origin;
-//   if (allowedOrigins.includes(origin)) {g
-//     res.setHeader("Access-Control-Allow-Origin", origin);
-//   }
-//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-//   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-CSRF-Token, XSRF-TOKEN");
-//   res.setHeader("Access-Control-Allow-Credentials", "true");
-
-//   if (req.method === "OPTIONS") {
-//     return res.sendStatus(200);
-//   }
-
-//   next();
-// });
-
-
 app.use(cors({
   origin: ["http://localhost:3000", "https://spots-app.onrender.com"],
   credentials: true, 
 }));
 
 app.options("*", cors());
-
 app.use(
   helmet.crossOriginResourcePolicy({
     policy: "cross-origin",
@@ -78,6 +54,7 @@ app.use((_req, _res, next) => {
 });
 
 app.use((err, _req, _res, next) => {
+  // check if error is a Sequelize error:
   if (err instanceof ValidationError) {
     err.errors = err.errors.map((e) => e.message);
     err.title = "Validation error";
