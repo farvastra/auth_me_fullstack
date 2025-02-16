@@ -25,7 +25,9 @@ export const signupUser = createAsyncThunk("session/signup", async (userData, th
   try {
 
     const response = await axiosInstance.post("https://auth-me-backend.onrender.com/api/users",
-      userData);
+      userData,{
+        withCredentials: true, 
+      });
 
     return response.data;
   } catch (error) {

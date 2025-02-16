@@ -21,12 +21,12 @@ const Navbar = () => {
         }
       } catch (error) {
         console.error("Error parsing stored user:", error);
-        localStorage.removeItem("user"); // Remove corrupted data
+        localStorage.removeItem("user"); 
       }
     }
   }, [dispatch, user]);
 
-  
+
     const handleLogout = async () => {
     try {
       dispatch(logOut());
@@ -45,7 +45,7 @@ const Navbar = () => {
           <>
             <Link to="/spots/create">Create Spot</Link>
             <Link to="/spots">Spots</Link>
-            {/* <span>Welcome, {user?.username}!</span> */}
+            <span>Welcome, {user?.username}!</span>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
