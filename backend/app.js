@@ -40,6 +40,19 @@ app.use((req, res, next) => {
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(express.json());
+const csrfProtection = csrf({ sessionKey: "session" }); 
+
+
+app.use(csrfProtection);
+
+app.use((req, res, next) => {
+  res.cookie("XSRF-TOKEN", req.csrfToken(), {
+    httpOnly: false,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Lax",
+  });
+  next();
+});
 
 
 
