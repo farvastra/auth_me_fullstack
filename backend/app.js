@@ -13,11 +13,11 @@ const session = require("express-session");
 const routes = require("./routes");
 
 const app = express();
-const cors = require("cors");
+
 
 app.use(
   cors({
-    origin: "https://spots-app.onrender.com",
+    origin: "https://spots-app.onrender.com, http://localhost:3000",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"], 
     allowedHeaders: ["Content-Type", "X-CSRF-Token"], 
