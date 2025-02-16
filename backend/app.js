@@ -51,16 +51,23 @@ app.use(
   })
 );
 
+app.use(csurf({
+  cookie: {
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Lax",
+    httpOnly: true,
+  },
+}));
 
-app.use(
-  csurf({
-    cookie: {
-      secure: isProduction,
-      sameSite: isProduction ? "Lax" : "Lax",  
-      httpOnly: true,
-    },
-  })
-);
+app.use((req, res, next) => {
+  res.cookie("XSRF-TOKEN", req.csrfToken(), {
+    httpOnly: false,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "Lax",
+  });
+  next();
+});
+
 app.use(routes);
 
 app.get("/", (req, res) => {
