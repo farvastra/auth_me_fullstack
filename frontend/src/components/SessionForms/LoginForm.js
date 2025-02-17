@@ -12,14 +12,19 @@ const LoginForm = () => {
 
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
-
+  const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.table({ credential, password });
     try {
       const result = await dispatch(loginUser({ credential, password }));
-    
-
+      console.log("loginUser result: ", result);    
+      if (loginUser.fulfilled.match(result)) {
+        console.log("userData", result.payload.user);
+        navigate("/spots");
+      }else{
+        setErrorMessage("Login failed: check your credential or password");
+      }  
       if (result.payload && result.payload.user) {
         const userData = result.payload.user; 
         console.log(result, userData);
@@ -42,7 +47,7 @@ const LoginForm = () => {
   return (
     <div className="login-container">
       <h2>Login</h2>
-      {error && <p className="error">Invalid credentials</p>}
+      {error && <p className="error">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"

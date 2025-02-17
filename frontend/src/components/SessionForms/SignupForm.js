@@ -21,7 +21,7 @@ const SignupForm = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async  (e) => {
     e.preventDefault();
     const result = await dispatch(signupUser(userData));
      const userDetails = result?.payload?.user; 
@@ -50,7 +50,7 @@ const SignupForm = () => {
         <input name="password" type="password" placeholder="Password" onChange={handleChange} />
 
       <button type="submit" disabled={loading}>
-        {loading ? "Signing up..." : "Sign Up"}
+        Sign Up
       </button>
       </form>
     </div>

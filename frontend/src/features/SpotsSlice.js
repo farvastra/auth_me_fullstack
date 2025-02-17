@@ -2,13 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance, {restoreCSRF} from '../utils/axiosInstance'; 
 const API_BASE_URL = 'https://auth-me-backend.onrender.com/api/spots';
 
-// Fetch all spots
-// export const fetchSpots = createAsyncThunk('spots/fetchSpots', async () => {
-//     const response = await axiosInstance.get(`${API_BASE_URL}/current`, );
-//     console.log("resp",response.data.Spots);
-//     return response.data.Spots;  
-// });
-
 // Fetch all spots by current user
 export const fetchSpots = createAsyncThunk('spots/fetchSpots', async () => {
 
