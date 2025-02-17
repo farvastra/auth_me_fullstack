@@ -40,8 +40,8 @@ The Spots & Reviews App is a full-stack web application that allows users to man
 
 1. **Clone the Repository:**
    ```
-   git clone https://github.com/farvastra/auth_me_backend.git
-   cd auth_me_backend
+   git clone https://github.com/farvastra/auth_me_fullstack.git
+   cd frontend
 
 
 2. **Backend Setup**
@@ -78,7 +78,7 @@ npm start
 
 ```
 
-Your Express API should now be running at http://localhost:8000.
+Your Express API should now be running at http:l//localhost:8000
 
 3. **Frontend Setup**
 
