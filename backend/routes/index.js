@@ -25,6 +25,17 @@ router.get("/api/debug/db", async (req, res) => {
     }
   });
 
-router.use('/api', apiRouter);
+router.post("/api/run-migrations", async (req, res) => {
+  try {
+    exec("npx sequelize-cli db:migrate --env production && npx sequelize-cli db:seed:all --env production", (error, stdout, stderr) => {
+      if (error) {
+        return res.status(500).json({ error: error.message });
+      }
+      res.json({ message: "Migrations and seeders ran successfully", output: stdout });
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to run migrations", details: error.message });
+  }
+});
 
 module.exports = router;
