@@ -3,7 +3,7 @@ import { getCsrfTokenFromCookie } from "./getCsrfToken"
 
 
 const axiosInstance = axios.create({
-    baseURL: "https://auth-me-backend.onrender.com/api",
+    baseURL: "http://localhost:8000/api",
     withCredentials: true,
 });
 axiosInstance.interceptors.request.use((config) => {

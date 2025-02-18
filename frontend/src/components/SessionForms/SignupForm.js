@@ -28,7 +28,7 @@ const SignupForm = () => {
             console.log(result, userDetails);
             dispatch(setUser(userDetails));
             localStorage.setItem("user", JSON.stringify(userData));
-    if (result.meta.requestStatus === "fulfilled")
+    if (result.meta.requestStatus === "fulfilled");
        navigate("/spots");
     console.log('Dispatch result:', result);
 

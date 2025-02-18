@@ -7,11 +7,12 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const csrfToken = getCsrfTokenFromCookie();
-      console.log("CSRF Token from cookie:", csrfToken);
+      
       if (!csrfToken) {
         return rejectWithValue("CSRF token not found");
       }
-      axiosInstance.defaults.headers.common["x-csrf-token"] = csrfToken;
+      //axiosInstance.defaults.headers.common["x-csrf-token"] = csrfToken;
+      console.log("user CSRF", csrfToken);
       const response = await axiosInstance.post(
         "/session",
         userData,
@@ -40,7 +41,7 @@ export const signupUser = createAsyncThunk(
       if (!csrfToken) {
         return thunkAPI.rejectWithValue("CSRF token not found");
       }
-      axiosInstance.defaults.headers.common["x-csrf-token"] = csrfToken;
+      // axiosInstance.defaults.headers.common["x-csrf-token"] = csrfToken;
       const response = await axiosInstance.post(
         "/users",
         userData,

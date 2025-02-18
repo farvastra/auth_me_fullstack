@@ -15,12 +15,12 @@ const LoginForm = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.table({ credential, password });
+    console.log("user payload", { credential, password });
     try {
       const result = await dispatch(loginUser({ credential, password }));
       console.log("loginUser result: ", result);    
       if (loginUser.fulfilled.match(result)) {
-        console.log("userData", result.payload.user);
+        ///console.log("userData", result.payload.user);
         navigate("/spots");
       }else{
         setErrorMessage("Login failed: check your credential or password");
