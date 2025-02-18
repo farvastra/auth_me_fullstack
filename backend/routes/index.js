@@ -15,7 +15,15 @@ router.get("/api/csrf/restore", (req, res) => {
     });
 });
 
-
+router.get("/api/debug/db", async (req, res) => {
+    try {
+      const dialect = sequelize.getDialect();
+      const dbName = sequelize.config.database || "Unknown DB";
+      res.json({ dialect, dbName });
+    } catch (error) {
+      res.status(500).json({ error: "Could not retrieve DB info", details: error });
+    }
+  });
 
 router.use('/api', apiRouter);
 
