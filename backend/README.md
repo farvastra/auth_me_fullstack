@@ -69,7 +69,7 @@ FOREIGN KEY (user_id)
 ## API Documentation
 
 BASE URL-
-`https://auth-me-backend.onrender.com/api` or `https://auth-me-backend.onrender.com`
+`http://localhost:8000/api` or `http://localhost:8000`
 
 - Endpoint: POST /users
 - Body:
