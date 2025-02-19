@@ -100,7 +100,7 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
-// 🔥 Signup User (JWT Version)
+// Signup User (JWT Version)
 router.post("/", validateSignup, async (req, res, next) => {
   const { firstName, lastName, email, username, password } = req.body;
 
@@ -113,12 +113,11 @@ router.post("/", validateSignup, async (req, res, next) => {
       password,
     });
 
-    // Generate JWT Token
     const token = jwt.sign({ id: user.id }, secret, { expiresIn });
 
     return res.status(201).json({
       user: user.toSafeObject(),
-      token, // 🔥 Send the JWT token in response
+      token, 
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {

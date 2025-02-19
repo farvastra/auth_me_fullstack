@@ -5,9 +5,7 @@ const spotsRouter = require("./spots.js");
 const reviewsRouter = require("./reviews.js");
 const delReviewImageRouter = require("./del-review-image.js")
 const delSpotImageRouter = require("./del-spot-image.js")
-const { restoreUser } = require("../../utils/auth.js");
 
-router.use(restoreUser);
 
 router.use("/session", sessionRouter);
 

@@ -66,7 +66,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../../db/models");
 const { check } = require("express-validator");
 const { handleValidationErrors } = require("../../utils/validation");
-const { restoreUser, requireAuth } = require("../../utils/auth"); // Updated middleware
+const {  restoreUser } = require("../../utils/auth"); // Updated middleware
 
 const router = express.Router();
 const { jwtConfig } = require("../../config");
@@ -84,7 +84,7 @@ const validateLogin = [
   handleValidationErrors,
 ];
 
-// 🔐 Login User (Returns JWT Token)
+//  Login User
 router.post("/", validateLogin, async (req, res, next) => {
   const { credential, password } = req.body;
 
@@ -100,18 +100,27 @@ router.post("/", validateLogin, async (req, res, next) => {
  console.log(token)
   return res.json({
     user: user.toSafeObject(),
-    token, // 🔥 Send the JWT token to the frontend
+    token, 
   });
 });
 
-// 🔓 Logout (JWT version doesn't require clearing cookies)
+// Logout 
 router.delete("/", (_req, res) => {
-  return res.json({ message: "Logged out (JWT doesn't store server-side sessions)" });
+  return res.json({ message: "Logged out " });
 });
 
-// 🛡️ Get the Current User (Requires JWT)
-router.get("/", restoreUser, requireAuth, (req, res) => {
+//  Get the Current User (Requires JWT)
+router.get("/", restoreUser, (req, res) => {
+  if (!req.user) {
+    console.log("User not found in request");
+    return res.status(401).json({
+      message: "Unauthorized: You must be signed in to access this resource.",
+    });
+  }
+
   return res.json({ user: req.user.toSafeObject() });
 });
+
+
 
 module.exports = router;

@@ -9,7 +9,7 @@ const {
   ReviewImage,
   Booking,
 } = require("../../db/models");
-const { setTokenCookie, restoreUser } = require("../../utils/auth");
+const { requireAuth } = require("../../utils/auth");
 const { validateSpot } = require("../../utils/validation");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
@@ -23,36 +23,6 @@ const router = express.Router();
 // };
 
 
-const SECRET_KEY = process.env.JWT_SECRET;
-
-const requireAuth = async (req, res, next) => {
-  const authHeader = req.headers.authorization;
-
-  console.log("Authorization Header:", authHeader); 
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Authentication required" });
-  }
-
-  const token = authHeader.split(" ")[1]; 
-
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    
-    console.log("Decoded Token:", decoded); 
-
-    req.user = await User.findByPk(decoded.id);
-    
-    if (!req.user) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    next();
-  } catch (error) {
-    console.error("JWT Error:", error);
-    return res.status(401).json({ message: "Invalid or expired token" });
-  }
-};
 
 
 // add query filter to get all spots
