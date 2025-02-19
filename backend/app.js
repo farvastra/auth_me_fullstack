@@ -41,18 +41,30 @@ app.use(
 );
 
 
-app.use(csurf());
+// app.use(csurf());
 
-app.use((req, res, next) => {
+// app.use((req, res, next) => {
  
-  const token = req.csrfToken();
-  res.cookie("XSRF-TOKEN", token, {
-    httpOnly: false, 
-    secure: isProduction,
-    sameSite: "Lax",
-  });
-  next();
-});
+//   const token = req.csrfToken();
+//   res.cookie("XSRF-TOKEN", token, {
+//     httpOnly: false, 
+//     secure: isProduction,
+//     sameSite: "Lax",
+//   });
+//   next();
+// });
+
+app.use(
+  csurf({
+    cookie: {
+      secure: isProduction,
+      sameSite: "Lax",
+      httpOnly: true,
+    },
+    ignoreMethods: ["GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS"], 
+  })
+);
+
 
 app.use(routes);
 

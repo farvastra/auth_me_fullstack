@@ -1,5 +1,6 @@
 const express = require("express");
 const { Op } = require("sequelize");
+require("dotenv").config();
 const {
   Spot,
   User,
@@ -10,26 +11,59 @@ const {
 } = require("../../db/models");
 const { setTokenCookie, restoreUser } = require("../../utils/auth");
 const { validateSpot } = require("../../utils/validation");
+const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 // Middleware to check authentication
-const requireAuth = (req, res, next) => {
-  if (!req.user) {
+// const requireAuth = (req, res, next) => {
+//   if (!req.user) {
+//     return res.status(401).json({ message: "Authentication required" });
+//   }
+//   next();
+// };
+
+
+const SECRET_KEY = process.env.JWT_SECRET; // Ensure this exists in .env
+
+const requireAuth = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  console.log("Authorization Header:", authHeader); // Debugging
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Authentication required" });
   }
-  next();
+
+  const token = authHeader.split(" ")[1]; // Extract token
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    
+    console.log("Decoded Token:", decoded); // Debugging
+
+    // Find user by ID
+    req.user = await User.findByPk(decoded.id);
+    
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    next();
+  } catch (error) {
+    console.error("JWT Error:", error);
+    return res.status(401).json({ message: "Invalid or expired token" });
+  }
 };
 
 
 // add query filter to get all spots
 router.get("/", async (req, res) => {
   try {
-    // Set default pagination values
+   
 
     const page = parseInt(req.query.page);
     const size = parseInt(req.query.size);
 
-    // Parse query parameters
     const minLat = parseFloat(req.query.minLat);
     const maxLat = parseFloat(req.query.maxLat);
     const minLng = parseFloat(req.query.minLng);
@@ -39,10 +73,8 @@ router.get("/", async (req, res) => {
 
     console.log(minLat, minLng);
 
-    // Initialize error collection
     const errors = {};
 
-    // Validate pagination
     if ((req.query.page !== undefined && isNaN(page)) || page < 1)
       errors.page = "must be a positive integer";
     if ((req.query.page !== undefined && isNaN(size)) || size < 1)
