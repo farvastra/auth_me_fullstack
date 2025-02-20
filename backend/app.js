@@ -9,6 +9,7 @@ const cookieSession = require("cookie-session");
 const { ValidationError } = require("sequelize");
 const { environment } = require("./config");
 const isProduction = environment === "production";
+const path = require("path");
 
 const routes = require("./routes");
 
@@ -30,6 +31,12 @@ app.use(
     policy: "cross-origin",
   })
 );
+
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 app.use(
   cookieSession({
