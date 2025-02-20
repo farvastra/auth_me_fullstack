@@ -3,10 +3,13 @@ import { useParams, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews, selectReviewsBySpotId, deleteReview } from "../../features/ReviewsSlice";
 import "../styles/reviews.css";
+import { useNavigate } from "react-router-dom";
+
 
 const Reviews = () => {
   const { spotId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const reviews = useSelector((state) => selectReviewsBySpotId(state, spotId));
 
   useEffect(() => {
