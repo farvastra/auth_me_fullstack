@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {loginUser} from "../../features/session/SessionSlice";
+import { loginUser, setUser } from "../../features/session/SessionSlice";
 import { useNavigate } from "react-router-dom";
-import { setUser } from '../../features/session/SessionSlice';
-import "../styles/login-signup.css"
+import "../styles/login-signup.css";
 
 const LoginForm = () => {
   const dispatch = useDispatch();
@@ -13,41 +12,34 @@ const LoginForm = () => {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("user payload", { credential, password });
+    console.log("User payload", { credential, password });
+
     try {
       const result = await dispatch(loginUser({ credential, password }));
-      console.log("loginUser result: ", result);    
-      if (loginUser.fulfilled.match(result)) {
-        ///console.log("userData", result.payload.user);
-        navigate("/spots");
-      }else{
-        setErrorMessage("Login failed: check your credential or password");
-      }  
-      if (result.payload && result.payload.user) {
-        const userData = result.payload.user; 
-        console.log(result, userData);
+      console.log("loginUser result:", result);
+
+      if (result.meta.requestStatus === "fulfilled" && result.payload) {
+        const userData = result.payload;
         dispatch(setUser(userData));
         localStorage.setItem("user", JSON.stringify(userData));
-        if (result.meta.requestStatus === "fulfilled") 
-                  navigate("/spots");
+        navigate("/spots");
       } else {
+        setErrorMessage("Login failed: check your credentials");
         console.error("Login failed: No user data returned");
       }
-
     } catch (error) {
-      
       console.error("Failed to login:", error);
+      setErrorMessage("An unexpected error occurred");
     }
-    
   };
-  
 
   return (
     <div className="login-container">
       <h2>Login</h2>
-      {error && <p className="error">{errorMessage}</p>}
+      {(error || errorMessage) && <p className="error">{error || errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <input
           type="text"

@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateSpot } from '../../features/SpotsSlice';
 import "../styles/editSpotPage.css";
+
+
 const EditSpotPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();

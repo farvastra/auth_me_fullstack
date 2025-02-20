@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signupUser } from "../../features/session/SessionSlice";
+import { signupUser, setUser } from "../../features/session/SessionSlice";
 import { useNavigate } from "react-router-dom";
-import { setUser } from '../../features/session/SessionSlice';
-import "../styles/login-signup.css"
+import "../styles/login-signup.css";
 
 const SignupForm = () => {
   const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.session); 
- const navigate = useNavigate();
+  const { error, loading } = useSelector((state) => state.session);
+  const navigate = useNavigate();
+  
   const [userData, setUserData] = useState({
     firstName: "",
     lastName: "",
@@ -21,37 +21,36 @@ const SignupForm = () => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async  (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await dispatch(signupUser(userData));
-     const userDetails = result?.payload?.user; 
-            console.log(result, userDetails);
-            dispatch(setUser(userDetails));
-            localStorage.setItem("user", JSON.stringify(userData));
-    if (result.meta.requestStatus === "fulfilled");
-       navigate("/spots");
-    console.log('Dispatch result:', result);
-
-   
+    dispatch(signupUser(userData)).then((res) => {
+      if (res.payload?.user) {
+        const userDetails = res.payload.user;
+        dispatch(setUser(userDetails));
+        localStorage.setItem("user", JSON.stringify(res.payload.user));  
+        navigate("/spots");  
+      } else {
+        console.error("Signup failed, no user in response:");
+        console.log(error?.message)
+      }
+    });
+    
   };
 
   return (
     <div className="signup-container">
-      
-      {error?.message && (
-  <p style={{ color: "red" }}>{error.message}</p>
-)}
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <h2>Sign Up</h2>
       <form onSubmit={handleSubmit}>
-        <input name="firstName" placeholder="First Name" onChange={handleChange} />
-        <input name="lastName" placeholder="Last Name" onChange={handleChange} />
-        <input name="username" placeholder="Username" onChange={handleChange} />
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} />
+        <input name="firstName" placeholder="First Name" onChange={handleChange} value={userData.firstName} />
+        <input name="lastName" placeholder="Last Name" onChange={handleChange} value={userData.lastName} />
+        <input name="username" placeholder="Username" onChange={handleChange} value={userData.username} />
+        <input name="email" type="email" placeholder="Email" onChange={handleChange} value={userData.email} />
+        <input name="password" type="password" placeholder="Password" onChange={handleChange} value={userData.password} />
 
-      <button type="submit" disabled={loading}>
-        Sign Up
-      </button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
       </form>
     </div>
   );

@@ -10,14 +10,14 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector(state => state.session.user);
 
-
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
-    if (storedUser) {
+  
+    if (storedUser && storedUser !== "undefined") {  
       try {
-        const parsedUser = JSON.parse(storedUser);  
+        const parsedUser = JSON.parse(storedUser);
         if (!user) {
-          dispatch(setUser(parsedUser)); 
+          dispatch(setUser(parsedUser));
         }
       } catch (error) {
         console.error("Error parsing stored user:", error);
@@ -25,7 +25,7 @@ const Navbar = () => {
       }
     }
   }, [dispatch, user]);
-
+  
 
     const handleLogout = async () => {
     try {

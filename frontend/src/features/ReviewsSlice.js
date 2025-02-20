@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit"
 import axiosInstance from "../utils/axiosInstance"; 
 const API_BASE_URL = "https://auth-me-backend.onrender.com/api/spots";
 
-// Fetch reviews for a specific spot
+// FETCH REVIEWS for a Specific Spot
 export const fetchReviews = createAsyncThunk(
   "reviews/fetchReviews",
   async (spotId, { rejectWithValue }) => {
@@ -15,7 +15,7 @@ export const fetchReviews = createAsyncThunk(
   }
 );
 
-// Add a new review
+// ADD A NEW REVIEW
 export const addReview = createAsyncThunk(
   "reviews/addReview",
   async ({ spotId, review, stars }, { rejectWithValue }) => {
@@ -28,26 +28,26 @@ export const addReview = createAsyncThunk(
   }
 );
 
-// Delete a review
+//  DELETE A REVIEW
 export const deleteReview = createAsyncThunk(
-    "reviews/deleteReview",
-    async ({ reviewId}, { rejectWithValue }) => {
-      try {
-       
-        const response = await axiosInstance.delete(`https://auth-me-backend.onrender.com//api/reviews/${reviewId}`);
-        return (response,{ reviewId});
-      } catch (error) {
-        return rejectWithValue(error.response?.data?.message || "Failed to delete review");
-      }
+  "reviews/deleteReview",
+  async ({ reviewId, spotId }, { rejectWithValue }) => {
+    try {
+      await axiosInstance.delete(`https://auth-me-backend.onrender.com/api/reviews/${reviewId}`);
+      return { reviewId, spotId }; 
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Failed to delete review");
     }
-  );  
+  }
+);
 
-
+// INITIAL STATE
 const initialState = {
   reviewsBySpotId: {},
   error: null
 };
 
+//  REVIEWS SLICE
 const reviewsSlice = createSlice({
   name: "reviews",
   initialState,
@@ -72,7 +72,7 @@ const reviewsSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(deleteReview.fulfilled, (state, action) => {
-        const { reviewId, spotId } = action.payload;
+        const { reviewId, spotId } = action.payload; 
         if (state.reviewsBySpotId[spotId]) {
           state.reviewsBySpotId[spotId] = state.reviewsBySpotId[spotId].filter(
             (review) => review.id !== reviewId
@@ -88,7 +88,7 @@ const reviewsSlice = createSlice({
 
 export default reviewsSlice.reducer;
 
-
+// Get Reviews by Spot ID
 export const selectReviewsBySpotId = createSelector(
   (state) => state.reviews.reviewsBySpotId || {},
   (_, spotId) => spotId,
