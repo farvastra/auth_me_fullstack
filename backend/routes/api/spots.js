@@ -14,17 +14,6 @@ const { validateSpot } = require("../../utils/validation");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
-// Middleware to check authentication
-// const requireAuth = (req, res, next) => {
-//   if (!req.user) {
-//     return res.status(401).json({ message: "Authentication required" });
-//   }
-//   next();
-// };
-
-
-
-
 // add query filter to get all spots
 router.get("/", async (req, res) => {
   try {
