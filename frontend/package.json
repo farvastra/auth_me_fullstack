@@ -15,6 +15,7 @@
     "react-router-dom": "^7.1.5",
     "react-scripts": "5.0.1",
     "reselect": "^5.1.1",
+    "serve": "^14.2.4",
     "web-vitals": "^4.2.4"
   },
   "scripts": {
@@ -22,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-      "serve": "serve -s build"
+    "serve": "serve -s build"
   },
   "eslintConfig": {
     "extends": [
