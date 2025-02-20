@@ -9,7 +9,7 @@ const cookieSession = require("cookie-session");
 const { ValidationError } = require("sequelize");
 const { environment } = require("./config");
 const isProduction = environment === "production";
-const path = require("path");
+
 
 const routes = require("./routes");
 
