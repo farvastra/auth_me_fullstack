@@ -17,7 +17,6 @@ const App = () => (
   <Provider store={store}>
     <Router>
       <Navbar />
-
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignupForm />} />

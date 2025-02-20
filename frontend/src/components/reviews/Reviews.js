@@ -21,7 +21,8 @@ const Reviews = () => {
   const handleDelete = async (reviewId) => {
     try {
       await dispatch(deleteReview({ reviewId })).unwrap();
-      window.location.reload();
+      navigate('/spots')
+      // window.location.reload();
     } catch (error) {
       console.error("Failed to delete review:", error);
     }
