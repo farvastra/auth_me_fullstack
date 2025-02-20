@@ -65,8 +65,6 @@ JWT_EXPIRES_IN = 7200
 
 **Set Up the Database:**
 
-If you're using Sequelize migrations, run:
-```
 npx sequelize-cli db:migrate
 
 ```
