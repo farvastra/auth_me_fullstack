@@ -1,24 +1,83 @@
-#!/usr/bin/env node
-// backend/bin/www
 
-// Import environment variables
-// require("dotenv").config();
+
+// const { port } = require("../config/index");
+
+// const app = require("../app");
+// const db = require("../db/models");
+
+// // Check the database connection before starting the app
+// db.sequelize
+//   .authenticate()
+//   .then(() => {
+//     console.log("Database connection success! Sequelize is ready to use...");
+
+//     // Start listening for connections
+//     app.listen(port, () => console.log(`Listening on port ${port}...`));
+//   })
+//   .catch((err) => {
+//     console.log("Database connection failure.");
+//     console.error(err);
+//   });
 
 const { port } = require("../config/index");
-
 const app = require("../app");
 const db = require("../db/models");
+const bcrypt = require("bcryptjs");
 
-// Check the database connection before starting the app
-db.sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Database connection success! Sequelize is ready to use...");
+// Function to seed demo users if they don't exist
+async function seedDemoUser() {
+    try {
+        const existingUser = await db.User.findOne({ where: { email: "demo@user.io" } });
 
-    // Start listening for connections
-    app.listen(port, () => console.log(`Listening on port ${port}...`));
-  })
-  .catch((err) => {
-    console.log("Database connection failure.");
-    console.error(err);
-  });
+        if (!existingUser) {
+            console.log("Seeding demo user...");
+            await db.User.bulkCreate([
+                {
+                    email: "demo@user.io",
+                    username: "Demo-lition",
+                    hashedPassword: bcrypt.hashSync("password"),
+                    firstName: "Demo",
+                    lastName: "Lition",
+                },
+                {
+                    email: "user1@user.io",
+                    username: "FakeUser1",
+                    hashedPassword: bcrypt.hashSync("password2"),
+                    firstName: "Fake",
+                    lastName: "User1",
+                },
+                {
+                    email: "user2@user.io",
+                    username: "FakeUser2",
+                    hashedPassword: bcrypt.hashSync("password3"),
+                    firstName: "Fake",
+                    lastName: "User2",
+                }
+            ]);
+            console.log("Demo users seeded successfully!");
+        } else {
+            console.log("Demo user already exists, skipping seed.");
+        }
+    } catch (error) {
+        console.error("Error seeding demo user:", error);
+    }
+}
+
+// Ensure migrations are applied before starting the server
+async function startServer() {
+    try {
+        await db.sequelize.authenticate();
+        console.log("Database connection success! Sequelize is ready to use...");
+
+        await db.sequelize.sync(); // Ensures tables exist
+        await seedDemoUser(); // Seed users if missing
+
+        app.listen(port, () => console.log(`Listening on port ${port}...`));
+    } catch (err) {
+        console.log("Database connection failure.");
+        console.error(err);
+    }
+}
+
+// Start the server
+startServer();
