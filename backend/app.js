@@ -8,7 +8,6 @@ const cookieParser = require("cookie-parser");
 const cookieSession = require("cookie-session");
 const { ValidationError } = require("sequelize");
 const { environment } = require("./config");
-const path = require("path");
 const isProduction = environment === "production";
 
 
@@ -44,12 +43,6 @@ app.use(
 
 
 app.use(routes);
-
-app.use(express.static(path.join(__dirname, "build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
 
 
 app.get("/", (req, res) => {
