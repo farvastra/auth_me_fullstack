@@ -1,30 +1,11 @@
 
 
-// const { port } = require("../config/index");
-
-// const app = require("../app");
-// const db = require("../db/models");
-
-// // Check the database connection before starting the app
-// db.sequelize
-//   .authenticate()
-//   .then(() => {
-//     console.log("Database connection success! Sequelize is ready to use...");
-
-//     // Start listening for connections
-//     app.listen(port, () => console.log(`Listening on port ${port}...`));
-//   })
-//   .catch((err) => {
-//     console.log("Database connection failure.");
-//     console.error(err);
-//   });
-
 const { port } = require("../config/index");
 const app = require("../app");
 const db = require("../db/models");
 const bcrypt = require("bcryptjs");
 
-// Function to seed demo users if they don't exist
+
 async function seedDemoUser() {
     try {
         const existingUser = await db.User.findOne({ where: { email: "demo@user.io" } });
@@ -63,14 +44,73 @@ async function seedDemoUser() {
     }
 }
 
-// Ensure migrations are applied before starting the server
+async function seedSpots() {
+    try {
+   
+            await db.Spot.bulkCreate([
+                {
+                    ownerId: 1,
+                    address: "123 Disney Lane",
+                    city: "San Francisco",
+                    state: "California",
+                    country: "United States of America",
+                    lat: 37.7645358,
+                    lng: -122.4730327,
+                    name: "App Academy",
+                    description: "Place where web developers are created",
+                    price: 123,
+                    avgRating: 4.5,
+                    previewImage: "image_url_1", 
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+                {
+                    ownerId: 2,
+                    address: "456 Example St",
+                    city: "Los Angeles",
+                    state: "California",
+                    country: "United States of America",
+                    lat: 34.052235,
+                    lng: -118.243683,
+                    name: "Example Spot",
+                    description: "A great place to visit",
+                    price: 200,
+                    avgRating: 4.0,
+                    previewImage: "image_url_2", 
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+                {
+                    ownerId: 3,
+                    address: "789 Sample Ave",
+                    city: "New York",
+                    state: "New York",
+                    country: "United States of America",
+                    lat: 40.712776,
+                    lng: -74.005974,
+                    name: "Sample Spot",
+                    description: "A nice spot to relax",
+                    price: 150,
+                    avgRating: 4.8,
+                    previewImage: "image_url_3", 
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                },
+            ]);
+            console.log("Spots seeded successfully!");
+} catch (error) {
+    console.error("Error seeding spots:", error);
+}
+}
+
 async function startServer() {
     try {
         await db.sequelize.authenticate();
         console.log("Database connection success! Sequelize is ready to use...");
 
-        await db.sequelize.sync(); // Ensures tables exist
-        await seedDemoUser(); // Seed users if missing
+        await db.sequelize.sync(); 
+        await seedDemoUser();
+        await seedSpots();
 
         app.listen(port, () => console.log(`Listening on port ${port}...`));
     } catch (err) {
@@ -78,6 +118,8 @@ async function startServer() {
         console.error(err);
     }
 }
+
+
 
 // Start the server
 startServer();
