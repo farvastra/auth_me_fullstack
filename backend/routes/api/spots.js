@@ -1,5 +1,5 @@
 const express = require("express");
-const { Op } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 require("dotenv").config();
 const {
   Spot,
@@ -127,7 +127,6 @@ const router = express.Router();
 // });
 
 
-
 router.get("/", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -142,25 +141,22 @@ router.get("/", async (req, res) => {
 
     const where = {};
     if (!isNaN(minLat) || !isNaN(maxLat)) {
-      where.lat = {
-        ...(minLat && { [Op.gte]: minLat }),
-        ...(maxLat && { [Op.lte]: maxLat }),
-      };
+      where.lat = {};
+      if (!isNaN(minLat)) where.lat[Op.gte] = minLat;
+      if (!isNaN(maxLat)) where.lat[Op.lte] = maxLat;
     }
     if (!isNaN(minLng) || !isNaN(maxLng)) {
-      where.lng = {
-        ...(minLng && { [Op.gte]: minLng }),
-        ...(maxLng && { [Op.lte]: maxLng }),
-      };
+      where.lng = {};
+      if (!isNaN(minLng)) where.lng[Op.gte] = minLng;
+      if (!isNaN(maxLng)) where.lng[Op.lte] = maxLng;
     }
     if (!isNaN(minPrice) || !isNaN(maxPrice)) {
-      where.price = {
-        ...(minPrice && { [Op.gte]: minPrice }),
-        ...(maxPrice && { [Op.lte]: maxPrice }),
-      };
+      where.price = {};
+      if (!isNaN(minPrice)) where.price[Op.gte] = minPrice;
+      if (!isNaN(maxPrice)) where.price[Op.lte] = maxPrice;
     }
 
-    // Fetch spots with average rating included
+    // Fetch spots with aggregated review data
     const spots = await Spot.findAll({
       where,
       limit: size,
@@ -168,19 +164,25 @@ router.get("/", async (req, res) => {
       attributes: {
         include: [
           [
-            Sequelize.fn("AVG", Sequelize.col("Reviews.stars")),
+            Sequelize.fn("COALESCE", Sequelize.fn("AVG", Sequelize.col("Reviews.stars")), 0),
             "avgStarRating",
           ],
-          [Sequelize.fn("COUNT", Sequelize.col("Reviews.id")), "numReviews"],
+          [
+            Sequelize.fn("COALESCE", Sequelize.fn("COUNT", Sequelize.col("Reviews.id")), 0),
+            "numReviews",
+          ],
         ],
       },
       include: [
         {
           model: Review,
+          as: "Reviews", // ✅ Fix: Use the correct alias
           attributes: [],
+          required: false, // Ensures spots without reviews are included
         },
       ],
       group: ["Spot.id"],
+      subQuery: false, // Important for pagination with groupBy
     });
 
     return res.json({ Spots: spots, page, size });
