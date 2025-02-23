@@ -240,7 +240,7 @@ router.get("/:spotId", async (req, res) => {
 });
 
 // Create a Spot
-router.post("/", requireAuth, validateSpot, async (req, res) => {
+router.post("/", requireAuth, validateSpot, async (req, res, next) => {  // ✅ Added "next" as a parameter
   try {
     const {
       address,
@@ -260,8 +260,8 @@ router.post("/", requireAuth, validateSpot, async (req, res) => {
       city,
       state,
       country,
-      lat,
-      lng,
+      lat: lat !== "" ? lat : null, 
+      lng: lng !== "" ? lng : null, 
       name,
       description,
       price,

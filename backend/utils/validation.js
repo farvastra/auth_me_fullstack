@@ -25,9 +25,11 @@ const validateSpot = [
   check("state").notEmpty().withMessage("State is required"),
   check("country").notEmpty().withMessage("Country is required"),
   check("lat")
+    .optional({ checkFalsy: true }) // ✅ Allow missing or empty lat
     .isFloat({ min: -90, max: 90 })
     .withMessage("Latitude must be within -90 and 90"),
   check("lng")
+    .optional({ checkFalsy: true }) // ✅ Allow missing or empty lng
     .isFloat({ min: -180, max: 180 })
     .withMessage("Longitude must be within -180 and 180"),
   check("name")
@@ -40,8 +42,7 @@ const validateSpot = [
   handleValidationErrors,
 ];
 
-
 module.exports = {
-    handleValidationErrors,
+  handleValidationErrors,
   validateSpot,
 };
