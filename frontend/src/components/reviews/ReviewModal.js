@@ -18,7 +18,7 @@ const ReviewModal = ({ spotId, onClose }) => {
       const newReview = await dispatch(addReview({ spotId, review, stars })).unwrap();
       // Reset state & close modal
       resetForm();
-      onClose(newReview); // Pass new review to parent
+      onClose(newReview); 
     } catch (err) {
       setError("Failed to submit review. Please try again.");
     }

@@ -29,7 +29,7 @@ const ReviewList = ({ reviews, spotId }) => {
               <strong>{review.User?.firstName}</strong> - {formattedDate}
               <p>{review.review}</p>
 
-              {/* ✅ Fix: Move delete button inside .map() */}
+          
               {userId === review.userId && (
                 <button
                   className="delete-review-btn"
@@ -43,7 +43,7 @@ const ReviewList = ({ reviews, spotId }) => {
         })}
       </ul>
 
-      {/* Delete Confirmation Modal */}
+      
       {deleteModal.isOpen && (
         <div className="delete-modal">
           <div className="modal-content">

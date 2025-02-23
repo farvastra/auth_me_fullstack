@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchSpots } from "../features/SpotsSlice";
 import { Tooltip } from "react-tooltip"; 
-// import { FaStar } from "react-icons/fa";
 import "./styles/homepage.css";
 
 const HomePage = () => {
