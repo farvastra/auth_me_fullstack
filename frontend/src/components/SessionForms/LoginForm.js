@@ -36,7 +36,7 @@ const LoginForm = ({ isOpen, onClose }) => {
       dispatch(setUser(userData));
       localStorage.setItem("user", JSON.stringify(userData));
       onClose();
-      navigate("/spots");
+      navigate("/spots/manage-spots");
     } else {
       setErrorMessage("Login failed: check your credentials");
       console.error("Login failed: No user data returned");
