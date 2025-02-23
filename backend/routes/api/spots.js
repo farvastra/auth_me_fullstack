@@ -252,6 +252,7 @@ router.post("/", requireAuth, validateSpot, async (req, res, next) => {  // ✅ 
       name,
       description,
       price,
+      previewImage
     } = req.body;
 
     const newSpot = await Spot.create({
@@ -265,6 +266,7 @@ router.post("/", requireAuth, validateSpot, async (req, res, next) => {  // ✅ 
       name,
       description,
       price,
+      previewImage
     });
 
     return res.status(201).json(newSpot);
