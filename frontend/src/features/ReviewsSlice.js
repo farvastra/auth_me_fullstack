@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createSelector } from "@reduxjs/toolkit";
 import axiosInstance from "../utils/axiosInstance"; 
+
 const API_BASE_URL = "https://auth-me-backend.onrender.com/api/spots";
 
 // FETCH REVIEWS for a Specific Spot
@@ -28,18 +29,28 @@ export const addReview = createAsyncThunk(
   }
 );
 
-//  DELETE A REVIEW
+// DELETE A REVIEW
 export const deleteReview = createAsyncThunk(
   "reviews/deleteReview",
   async ({ reviewId, spotId }, { rejectWithValue }) => {
     try {
-      await axiosInstance.delete(`https://auth-me-backend.onrender.com/api/reviews/${reviewId}`);
-      return { reviewId, spotId }; 
+      if (!reviewId) {
+        console.error("deleteReview Error: Missing reviewId");
+        throw new Error("Review ID is required to delete a review.");
+      }
+
+      console.log(`Attempting to delete review with ID: ${reviewId}`);
+      const response = await axiosInstance.delete(`/reviews/${reviewId}`);
+      console.log("Successfully deleted review:", response.data);
+
+      return { reviewId, spotId };
     } catch (error) {
+      console.error("Error deleting review:", error.response?.data || error.message);
       return rejectWithValue(error.response?.data?.message || "Failed to delete review");
     }
   }
 );
+
 
 // INITIAL STATE
 const initialState = {
@@ -47,7 +58,7 @@ const initialState = {
   error: null
 };
 
-//  REVIEWS SLICE
+// REVIEWS SLICE
 const reviewsSlice = createSlice({
   name: "reviews",
   initialState,

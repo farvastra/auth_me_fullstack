@@ -1,0 +1,159 @@
+.spot-detail-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+.location {
+  font-size: 18px;
+  color: gray;
+}
+
+.images-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.large-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.small-images {
+  display: flex;
+  gap: 10px;
+}
+
+.small-image {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.hosted-by {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.description {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.callout-box {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 20px;
+  width: 250px;
+  float: right;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.reserve-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.reserve-button:hover {
+  background-color: #e04e53;
+}
+.spot-detail-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.spot-location {
+  font-size: 1.2rem;
+  color: gray;
+}
+
+.spot-images {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.large-image {
+  width: 100%;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.small-images {
+  display: flex;
+  gap: 10px;
+}
+
+.small-images img {
+  width: 23%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.spot-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.spot-description {
+  width: 60%;
+}
+
+.callout-box {
+  width: 35%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #fafafa;
+}
+
+.spot-price {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.callout-box span {
+  font-size: 1rem;
+  color: gray;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e04146;
+}
+.post-review-button{
+  width: 20%
+}

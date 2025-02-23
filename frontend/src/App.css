@@ -9,7 +9,11 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #f8f8f8;
 }
-
+.error{
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
 
 
 

@@ -7,10 +7,9 @@ import LoginForm from "./components/SessionForms/LoginForm";
 import SignupForm from "./components/SessionForms/SignupForm";
 import HomePage from "./components/HomePage";
 import CreateSpot from "./components/spots/CreateSpotForm"; 
-import AllSpots from "./components/spots/Spots"; 
 import EditSpotPage from './components/spots/EditSpotPage';
-import AddReview from "./components/reviews/AddReview";
-import Reviews from "./components/reviews/Reviews";
+import ManageSpots from "./components/spots/ManageSpots";
+import SpotDetailPage from "./components/spots/SpotDetailPage";
 import "./App.css";
 
 const App = () => (
@@ -22,11 +21,9 @@ const App = () => (
         <Route path="/signup" element={<SignupForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/spots/create" element={<CreateSpot />} />
-        <Route path="/spots" element={<AllSpots />} /> 
+        <Route path="/spots/:id" element={<SpotDetailPage />} /> 
         <Route path="/edit-spot/:id" element={<EditSpotPage />} />
-        <Route path="/add-review/:spotId" element={<AddReview />} />
-        <Route path="/spots/:spotId/reviews" element={<Reviews />} />
-
+        <Route path="/spots/manage-spots" element={<ManageSpots />} />
       </Routes>
     </Router>
   </Provider>

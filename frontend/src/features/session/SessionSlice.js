@@ -78,8 +78,14 @@ const sessionSlice = createSlice({
     error: null,
   },
   reducers: {
-    setUser: (state, action) => {
+         setUser: (state, action) => {
             state.user = action.payload;
+          },
+          setError: (state, action) => {
+            state.error = action.payload;
+          },
+          clearError: (state) => {
+            state.error = null;
           },
     logOut: (state) => {
       state.user = null;
@@ -123,5 +129,5 @@ const sessionSlice = createSlice({
 });
 
 
-export const { setUser, logOut } = sessionSlice.actions;
+export const { setUser, logOut, clearError } = sessionSlice.actions;
 export default sessionSlice.reducer;

@@ -1,0 +1,150 @@
+.manage-spots {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .manage-spots h1 {
+    font-size: 26px;
+    margin-bottom: 20px;
+  }
+  
+  .no-spots {
+    font-size: 18px;
+  }
+  
+  .create-spot-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: #ff5a5f;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .spot-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .spot-tiles {
+    display: flex;
+    align-items: center;
+    background: #f8f8f8;
+    margin-bottom: 15px;
+    padding: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .spot-image img {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  
+  .spot-info {
+    flex: 1;
+    margin-left: 15px;
+    text-align: left;
+  }
+  
+  .spot-info h3 {
+    margin: 0;
+    font-size: 18px;
+  }
+  
+  .spot-info p {
+    margin: 5px 0;
+    color: #555;
+  }
+  
+  .spot-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .update-btn,
+  .delete-btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background 0.3s;
+  }
+  
+  .update-btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  
+  .update-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .delete-btn {
+    background-color: #ff5a5f;
+    color: white;
+  }
+  
+  .delete-btn:hover {
+    background-color: #e04e52;
+  }
+  
+  .delete-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 1000;
+  }
+  
+  .modal-content h2 {
+    margin-bottom: 10px;
+  }
+  
+  .modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .delete-confirm-btn {
+    background: red;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .cancel-btn {
+    background: darkgray;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .delete-confirm-btn:hover {
+    background: darkred;
+  }
+  
+  .cancel-btn:hover {
+    background: gray;
+  }
+  

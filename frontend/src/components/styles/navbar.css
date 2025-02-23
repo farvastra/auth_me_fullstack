@@ -42,26 +42,118 @@ nav {
   }
   
   nav .auth-links button {
-    padding: 8px 8px;
-    background-color: #e74c3c;
+    padding: 8px 15px;
+    white-space: nowrap;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease;
     border: none;
+    cursor: pointer;
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+  }
+  
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: red;
     color: white;
-    font-size: 16px;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    width: 50px;
+  }
+  .logout{
+    background-color: red;
+    color: white;
+  }
+
+  .user-menu-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .user-menu-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font-size: 14px;
   }
   
-  nav .auth-links button:hover {
-    background-color: #c0392b; 
+  .user-menu-btn:hover {
+    background: #0056b3;
   }
   
-  nav .auth-links span {
-    font-weight: bold;
-    margin-right: 20px;
-    font-size: 16px;
+  .user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    min-width: 180px;
+    z-index: 1000;
+    padding: 10px;
   }
   
+  .user-dropdown p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .logout-btn {
+    background: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .logout-btn:hover {
+    background: darkred;
+  }
+  
+  .create-spot-btn {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .dropdown-btn{
+    background-color: #007bff;
+    font-size: medium;
+  }
   /* Responsive Navbar */
   @media (max-width: 768px) {
     nav {
