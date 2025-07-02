@@ -20,7 +20,7 @@ const ReviewModal = ({ spotId, onClose }) => {
       resetForm();
       onClose(newReview); 
     } catch (err) {
-      setError("Failed to submit review.Please try again.");
+      setError("Failed to submit review, Please try again.");
     }
   };
 
