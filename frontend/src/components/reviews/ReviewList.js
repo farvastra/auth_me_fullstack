@@ -11,7 +11,7 @@ const ReviewList = ({ reviews, spotId }) => {
   const handleDeleteConfirm = async () => {
     if (deleteModal.reviewId) {
       console.log("Deleting review with ID:", deleteModal.reviewId);
-      await dispatch(deleteReview({ reviewId: deleteModal.reviewId, spotId })); // Ensure spotId is included
+      await dispatch(deleteReview({ reviewId: deleteModal.reviewId, spotId })); 
       setDeleteModal({ isOpen: false, reviewId: null });
     }
   };

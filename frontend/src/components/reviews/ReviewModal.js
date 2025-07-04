@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addReview } from "../../features/ReviewsSlice"; // Import your review action
-import { IoClose } from "react-icons/io5"; // Close (X) icon
+import { addReview } from "../../features/ReviewsSlice";
+import { IoClose } from "react-icons/io5";
 import "../styles/reviewModal.css";
 
 const ReviewModal = ({ spotId, onClose }) => {
