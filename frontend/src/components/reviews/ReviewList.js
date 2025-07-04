@@ -16,8 +16,7 @@ const ReviewList = ({ reviews, spotId }) => {
     }
   };
   
-
-  return (
+return (
     <div>
       <ul className="reviews-list">
         {reviews.map((review) => {

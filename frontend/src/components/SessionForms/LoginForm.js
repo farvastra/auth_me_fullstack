@@ -38,7 +38,7 @@ const LoginForm = ({ isOpen, onClose }) => {
       onClose();
       navigate("/spots/manage-spots");
     } else {
-      setErrorMessage("Login failed: check your credentials");
+      setErrorMessage("Login failed: please check your credentials");
       console.error("Login failed: No user data returned");
     }
   } catch (error) {
