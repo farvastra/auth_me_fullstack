@@ -5,7 +5,7 @@ import { fetchSpots } from "../features/SpotsSlice";
 import { Tooltip } from "react-tooltip"; 
 import "./styles/homepage.css";
 
-const HomePage = () => {
+  const HomePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { spots, status, error } = useSelector((state) => state.spots);
@@ -59,4 +59,4 @@ const HomePage = () => {
     )}
   
   
-   export default HomePage;
+  export default HomePage;
