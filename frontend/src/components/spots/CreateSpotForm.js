@@ -57,9 +57,8 @@ const CreateSpotForm = () => {
 
         setErrors(newErrors);
 
-        // If there are errors, show global message and return false
         if (Object.keys(newErrors).length > 0) {
-            setGlobalError("Please correct the errors below before submitting.");
+            setGlobalError("Please correct the errors below before submitting...");
             return false;
         }
 
@@ -80,7 +79,7 @@ const CreateSpotForm = () => {
           console.log("newspot", newSpot);
           navigate(`/spots/${newSpot.id}`); 
       } catch (error) {
-          setGlobalError("An error occurred while creating the spot. Please try again.");
+          setGlobalError("An error occurred while creating the spot, Please try again.");
       }
   };
   
@@ -89,10 +88,8 @@ const CreateSpotForm = () => {
         <form onSubmit={handleSubmit} className="create-spot-form">
             <h2>Create A New Spot</h2>
 
-            {/* Global error message */}
             {globalError && <p className="error-message">{globalError}</p>}
 
-            {/* Section 1: Location */}
             <section>
                 <h3>Where's your place located?</h3>
                 <p>Guests will only get your exact address once they booked a reservation.</p>
